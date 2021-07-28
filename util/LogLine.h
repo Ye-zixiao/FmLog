@@ -1,0 +1,89 @@
+//
+// Created by Ye-zixiao on 2021/7/27.
+//
+
+#ifndef FMLOG_UTIL_LOGLINE_H_
+#define FMLOG_UTIL_LOGLINE_H_
+
+#include <string_view>
+#include <memory>
+
+namespace fm::log {
+
+enum class LogLevel : uint8_t {
+  kINFO, kWARN, kERROR, kDEBUG, kFATAL
+};
+
+enum class SupportedTypes : uint8_t;
+
+class LogLine {
+ public:
+  LogLine(LogLevel level, int old_errno, const char *file, uint32_t line);
+  ~LogLine() = default;
+
+  // movable
+  LogLine(LogLine &&) noexcept = default;
+  LogLine &operator=(LogLine &&) noexcept = default;
+
+  void stringify(std::ostream &os);
+
+  LogLine &operator<<(char c);
+  LogLine &operator<<(int32_t i32);
+  LogLine &operator<<(uint32_t u32);
+  LogLine &operator<<(int64_t i64);
+  LogLine &operator<<(uint64_t u64);
+  LogLine &operator<<(double d);
+  LogLine &operator<<(const std::string &str);
+  LogLine &operator<<(std::string_view sv);
+
+  template<size_t N>
+  LogLine &operator<<(const char (&cstr)[N]) {
+    encodeStrView(std::string_view(cstr));
+    return *this;
+  }
+
+  template<typename T>
+  std::enable_if_t<std::is_same<T, const char *>::value, LogLine &>
+  operator<<(const T &cstr) {
+    encodeStrView(std::string_view(cstr));
+    return *this;
+  }
+
+  template<typename T>
+  std::enable_if_t<std::is_same<T, char *>::value, LogLine &>
+  operator<<(const T &cstr) {
+    encodeStrView(std::string_view(cstr));
+    return *this;
+  }
+
+ private:
+  char *buffer();
+  void resizeBufferIfNeeded(size_t needed_bytes);
+  void stringify(std::ostream &os, char *start, const char *const end);
+
+ private:
+  template<typename T>
+  void encode(T t);
+
+  template<typename T>
+  void encode(SupportedTypes type, T t);
+
+  void encodeStrView(std::string_view sv);
+  void encodeString(std::string_view sv);
+
+  template<typename T>
+  void decode(std::ostream &os, char *&b);
+
+  void decodeStrView(std::ostream &os, char *&b);
+  void decodeRawStr(std::ostream &os, char *&b);
+
+ private:
+  size_t used_bytes_;
+  size_t buffer_size_;
+  std::unique_ptr<char[]> heap_buffer_;
+  char stack_buffer_[256 - sizeof(size_t) * 2 - sizeof(decltype(heap_buffer_))];
+};
+
+} // namespace fm::log
+
+#endif //FMLOG_UTIL_LOGLINE_H_

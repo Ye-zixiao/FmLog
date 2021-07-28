@@ -1,0 +1,10 @@
+cmake_minimum_required(VERSION 3.16)
+
+add_executable(TimeStamp_test TimeStamp_test.cpp)
+target_link_libraries(TimeStamp_test fmutil)
+
+add_executable(LogLine_test LogLine_test.cpp)
+target_link_libraries(LogLine_test fmutil)
+
+add_executable(StdLogger_test StdLogger_test.cpp)
+target_link_libraries(StdLogger_test fmutil)
