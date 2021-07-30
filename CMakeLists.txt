@@ -24,8 +24,9 @@ set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 
 include_directories(${PROJECT_SOURCE_DIR})
+include_directories(${PROJECT_SOURCE_DIR}/include)
 
 add_subdirectory(util)
 
-add_executable(FmLog main.cpp include/Log.h)
+add_executable(FmLog main.cpp include/fmlog/Log.h)
 target_link_libraries(FmLog fmutil)

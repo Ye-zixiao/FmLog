@@ -12,20 +12,22 @@
 
 namespace fm::log {
 
-void getAllocation(int &new_time, int &reuse_time,
-                   int &backup_push_time, int &backup_pop_time);
+void getAllocationForDebug(int &new_time, int &reuse_time,
+                           int &backup_push_time, int &backup_pop_time,
+                           int &backup_size);
 
 class LogBuffer {
  public:
   struct Item {
-    char padding[256 - sizeof(LogLine)]{};
+    char padding[128 - sizeof(LogLine)]{};
     LogLine log_line;
     Item(LogLine &&ll) noexcept: log_line(std::move(ll)) {}
     ~Item() = default;
   };
 
-//   简单测试了下每次分配1M（4096*256）的空间性能更好
-  static constexpr size_t kSize = 4096;
+  // 简单地选择了一个4M（128 * 4096 * 8）大小的空间
+  // 这个大小可以按照自身情况进行选定
+  static constexpr size_t kSize = 4096 * 8;
 
   LogBuffer();
   ~LogBuffer();
@@ -78,7 +80,7 @@ class LogBufferQueue {
   std::atomic<size_t> write_index_;
   size_t read_index_;
   std::atomic_flag flag_;
-  RingQueue<5> backup_log_buffers_;
+  RingQueue<4> backup_log_buffers_; // 日志缓冲区空间内存池队列，可自选设定
 };
 
 } // namespace fm::log

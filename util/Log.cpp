@@ -2,7 +2,7 @@
 // Created by Ye-zixiao on 2021/7/28.
 //
 
-#include "include/Log.h"
+#include "include/fmlog/Log.h"
 #include <memory>
 #include <cassert>
 #include "util/BaseLogger.h"
@@ -22,8 +22,19 @@ void initialize(StdLoggerTag) {
 void initialize(AsyncLoggerTag,
                 const std::string &log_directory,
                 const std::string &log_file_name,
-                uint32_t log_file_roll_size_mb) {
+                uint32_t log_file_size_max) {
+  logger = std::make_unique<AsyncLogger>(log_directory, log_file_name, log_file_size_max);
+  atomic_logger.store(logger.get(), std::memory_order_release);
+}
 
+std::atomic<LogLevel> atomic_log_level{LogLevel::kINFO};
+
+void setLogLevel(LogLevel log_level) {
+  atomic_log_level.store(log_level, std::memory_order_release);
+}
+
+bool isLowerThanOrEqualToCurr(LogLevel log_level) {
+  return log_level <= atomic_log_level.load(std::memory_order_acquire);
 }
 
 bool FmLog::operator==(LogLine &log_line) {

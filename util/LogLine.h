@@ -11,7 +11,7 @@
 namespace fm::log {
 
 enum class LogLevel : uint8_t {
-  kINFO, kWARN, kERROR, kDEBUG, kFATAL
+  kINFO = 0, kWARN = 1, kERROR = 2, kDEBUG = 3, kFATAL = 4
 };
 
 enum class SupportedTypes : uint8_t;
@@ -83,10 +83,12 @@ class LogLine {
   void decodeRawStr(std::ostream &os, char *&b);
 
  private:
+  static constexpr size_t kLogLineSize = 128;
+
   size_t used_bytes_;
   size_t buffer_size_;
   std::unique_ptr<char[]> heap_buffer_;
-  char stack_buffer_[256 - sizeof(size_t) * 2 - sizeof(decltype(heap_buffer_))];
+  char stack_buffer_[kLogLineSize - sizeof(size_t) * 2 - sizeof(decltype(heap_buffer_))];
 };
 
 } // namespace fm::log

@@ -4,13 +4,12 @@
 
 #include <thread>
 #include <iostream>
-#include "include/Log.h"
+#include "fmlog/Log.h"
 using namespace std;
 
 int main() {
   auto start = fm::time::SystemClock::now();
   fm::log::initialize(fm::log::StdLoggerTag{});
-  cerr << "initialize done" << endl;
 
   thread t1([] {
     for (int i = 0; i < 10000; ++i)

@@ -5,6 +5,7 @@
 #include <string>
 #include <string_view>
 #include <iostream>
+#include "util/SystemClock.h"
 #include "util/LogLine.h"
 using namespace std;
 using namespace fm::log;
@@ -38,8 +39,13 @@ int main() {
                                ";;;;;jfdklsssssssssssssssssssssssssssssssssssssssssssss"
                                "ssssssssssssssssdfjjfdlong string");
 
+  LogLine log_line_warn(LogLevel::kWARN, 0, __FILE__, __LINE__);
+  log_line_warn << "something happens at time(" << fm::time::SystemClock::now().toString()
+                << ") in main thread";
+
   log_line_error.stringify(cout);
   log_line_info.stringify(cout);
+  log_line_warn.stringify(cout);
 
   return 0;
 }

@@ -2,7 +2,7 @@
 // Created by Ye-zixiao on 2021/7/27.
 //
 
-#include "LogLine.h"
+#include "util/LogLine.h"
 #include <iostream>
 #include <cstring>
 #include <unistd.h>
@@ -110,7 +110,7 @@ LogLine::LogLine(LogLevel level, int old_errno, const char *file, uint32_t line)
       buffer_size_(sizeof(stack_buffer_)),
       heap_buffer_(),
       stack_buffer_{} {
-  static_assert(sizeof(LogLine) == 256, "sizeof LogLine != 256");
+  static_assert(sizeof(LogLine) == 128, "sizeof LogLine != 128");
   encode<time::TimeStamp>(time::SystemClock::now());
   encode<pid_t>(thisThreadId());
   encode<LogLevel>(level);
@@ -140,20 +140,18 @@ void LogLine::stringify(std::ostream &os) {
 // 2021-07-27 17:40:46.980012 27177 [INFO] Logger_test.cpp:25 - (errno message) hello
 // 编码方式：
 //       int64_t              pid_t uint8_t  string_view uint32_t 后续的部分按照类型码+数据的组合进行编码
-  os << timestamp.toString(true) << ' ' << thread_id
-     << ' ' << thread_id << " [" << logLevelToString(log_level)
-     << "] " << basename(file.data()) << ':' << line << " - ";
+// 但这种引入实时解析的方法可能会一定程度上降低日志输出的性能
+  os << timestamp.toString(true) << ' ' << thread_id;
+  os << " [" << logLevelToString(log_level) << "] ";
+  os << basename(file.data()) << ':' << line << " - ";
   if (old_errno != 0) {
     os << "(" << strerror(old_errno) << ") ";
     errno = 0;
   }
   stringify(os, b, end);
-  os << std::endl;
-
-//  char buf[256]{};
-//  snprintf(buf, 256, "%s %d [%s] %s:%u - (%s)\n", timestamp.toString(true).c_str(),
-//           thread_id, logLevelToString(log_level), file.data(), line, strerror(old_errno));
-//  std::cout << std::string_view(buf);
+//  os << std::endl;
+// 不要使用std::endl来输出换行符，因为它会造成一次非必要的刷新操作
+  os << '\n';
 
   if (log_level >= LogLevel::kFATAL) {
     os.flush();

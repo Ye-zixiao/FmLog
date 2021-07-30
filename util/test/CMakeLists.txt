@@ -14,3 +14,9 @@ target_link_libraries(LogBufferQueue_test fmutil)
 
 add_executable(LogLine_thread_test LogLine_thread_test.cpp)
 target_link_libraries(LogLine_thread_test fmutil)
+
+add_executable(AsyncLogger_test AsyncLogger_test.cpp)
+target_link_libraries(AsyncLogger_test fmutil)
+
+add_executable(FmLog_bench FmLog_bench.cpp)
+target_link_libraries(FmLog_bench fmutil)
