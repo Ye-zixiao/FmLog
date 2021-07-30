@@ -4,6 +4,7 @@ project(FmLog)
 set(CXX_FLAGS
         -fno-omit-frame-pointer
         -Wall
+        -O3
         -Wextra
         -Werror
         -Wconversion

@@ -3,32 +3,36 @@
 //
 
 #include <thread>
+#include <iostream>
 #include "include/Log.h"
 using namespace std;
 
 int main() {
+  auto start = fm::time::SystemClock::now();
   fm::log::initialize(fm::log::StdLoggerTag{});
+  cerr << "initialize done" << endl;
 
-  thread t([] {
-    char buf[32] = "joker is not joke";
-
-    for (int i = 0; i < 1000; ++i) {
-      LOG_INFO << "hello world" << std::string_view(". talk is cheap")
-               << std::string(", show me the code. ") << &buf[6] << 32
-               << 123.432 << -424 << INT32_MAX << -.32535;
-    }
+  thread t1([] {
+    for (int i = 0; i < 10000; ++i)
+      LOG_INFO << "hello world, " << "show me the code";
   });
-
-  for (int i = 0; i < 1000; ++i) {
-    errno = 1;
-    LOG_ERROR << std::string("fjksdlsdlsdlsdlsdlsdlsdlsdlsdlsdlsdlsdl"
-                             "dfjskjfas;kldddddkldkldkldkldkldkldklddfsd"
-                             "jfsdklfjkls;jajjjajajajajajajajajajajajajf"
-                             "fjklds;s;s;s;s;s;s;s;s;s;s;s;s;s;s;s;s;s;s"
-                             "string end------");
-  }
-
-  t.join();
-
+  thread t2([] {
+    for (int i = 0; i < 10000; ++i)
+      LOG_INFO << "hello world, " << "show me the code";
+  });
+  thread t3([] {
+    for (int i = 0; i < 10000; ++i)
+      LOG_ERROR << "pi: " << 3.1425926 << ", root(3): " << 1.7320508075688;
+  });
+  thread t4([] {
+    for (int i = 0; i < 10000; ++i)
+      LOG_ERROR << "pi: " << 3.1425926 << ", root(3): " << 1.7320508075688;
+  });
+  t1.join();
+  t2.join();
+  t3.join();
+  t4.join();
+  auto end = fm::time::SystemClock::now();
+  cerr << (end - start).count() << endl;
   return 0;
 }

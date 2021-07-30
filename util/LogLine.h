@@ -18,10 +18,15 @@ enum class SupportedTypes : uint8_t;
 
 class LogLine {
  public:
+  // 构造一个无效的日志行
+  LogLine() : used_bytes_(0),
+              buffer_size_(sizeof(stack_buffer_)),
+              heap_buffer_(), stack_buffer_{} {}
+
   LogLine(LogLevel level, int old_errno, const char *file, uint32_t line);
   ~LogLine() = default;
 
-  // movable
+  // 可移动但不可拷贝
   LogLine(LogLine &&) noexcept = default;
   LogLine &operator=(LogLine &&) noexcept = default;
 

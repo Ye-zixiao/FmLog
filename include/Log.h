@@ -7,6 +7,8 @@
 
 #include <string>
 #include "util/LogLine.h"
+#include "util/TimeStamp.h"
+#include "util/SystemClock.h"
 
 namespace fm::log {
 

@@ -3,7 +3,7 @@
 //
 
 #include "LogLine.h"
-#include <ostream>
+#include <iostream>
 #include <cstring>
 #include <unistd.h>
 #include "util/TimeStamp.h"
@@ -110,6 +110,7 @@ LogLine::LogLine(LogLevel level, int old_errno, const char *file, uint32_t line)
       buffer_size_(sizeof(stack_buffer_)),
       heap_buffer_(),
       stack_buffer_{} {
+  static_assert(sizeof(LogLine) == 256, "sizeof LogLine != 256");
   encode<time::TimeStamp>(time::SystemClock::now());
   encode<pid_t>(thisThreadId());
   encode<LogLevel>(level);
@@ -148,6 +149,11 @@ void LogLine::stringify(std::ostream &os) {
   }
   stringify(os, b, end);
   os << std::endl;
+
+//  char buf[256]{};
+//  snprintf(buf, 256, "%s %d [%s] %s:%u - (%s)\n", timestamp.toString(true).c_str(),
+//           thread_id, logLevelToString(log_level), file.data(), line, strerror(old_errno));
+//  std::cout << std::string_view(buf);
 
   if (log_level >= LogLevel::kFATAL) {
     os.flush();

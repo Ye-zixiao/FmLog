@@ -46,6 +46,11 @@ inline TimeStamp &TimeStamp::operator-=(const DefaultDuration &rhs) {
   return *this;
 }
 
+inline TimeStamp::DefaultDuration operator-(const TimeStamp &lhs,
+                                            const TimeStamp &rhs) {
+  return lhs.timeSinceEpoch() - rhs.timeSinceEpoch();
+}
+
 template<typename Rep, typename Period>
 inline TimeStamp operator+(const TimeStamp &lhs,
                            const std::chrono::duration<Rep, Period> &rhs) {

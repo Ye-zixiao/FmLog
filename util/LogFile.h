@@ -5,8 +5,17 @@
 #ifndef FMLOG_UTIL_LOGFILE_H_
 #define FMLOG_UTIL_LOGFILE_H_
 
+#include <unistd.h>
+
+namespace fm::log {
+
 class LogFile {
+ public:
+
+ private:
 
 };
+
+} // namespace fm::log
 
 #endif //FMLOG_UTIL_LOGFILE_H_

@@ -12,6 +12,7 @@ namespace fm::log {
 
 class StdLogger : public BaseLogger {
  public:
+  ~StdLogger() override = default;
   void add(LogLine &&log_line) override;
 
  private:

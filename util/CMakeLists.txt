@@ -1,7 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
 set(SOURCE_FILES
-        AppendFile.h AppendFile.cpp
         LogFile.h LogFile.cpp
         LogBufferQueue.h LogBufferQueue.cpp
         AsyncLogger.h AsyncLogger.cpp
