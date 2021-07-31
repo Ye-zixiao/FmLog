@@ -1,6 +1,6 @@
 # FmLog：A Simple Asynchronous/Stdout Logger Library
 
-## 1. 设置特点
+## 1. 项目特点
 
 1. 内存使用紧凑节省。对于日志行尽可能减少常量字符串的拷贝（使用`std::string_view`），并将相关的数据以编码的方式放入到日志行的缓冲区中而不是直接`memcpy()`到其中，最后输出时实时解析输出；
 2. 可以使用异步日志工作方式，将真正的日志输出工作交给异步的背景线程去做，所以输出很快。至少比muduo中实现的日志库快，在`examples`目录中有类似于muduo的benchmark测试程序；
