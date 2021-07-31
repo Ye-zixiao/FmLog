@@ -12,6 +12,8 @@ namespace fm::log {
 
 class StdLogger : public BaseLogger {
  public:
+  // StdLogger的主要工作就是向stdout输出日志行
+
   ~StdLogger() override = default;
   void add(LogLine &&log_line) override;
 

@@ -12,4 +12,4 @@ set(SOURCE_FILES
 add_library(fmutil SHARED ${SOURCE_FILES})
 target_link_libraries(fmutil pthread)
 
-add_subdirectory(test)
+add_subdirectory(tests)

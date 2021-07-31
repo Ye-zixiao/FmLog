@@ -27,7 +27,7 @@ void bench(bool long_log) {
 
     auto end_time = fm::time::SystemClock::now();
     // 平均输出每一条日志需要多少时间（单位微秒us）
-    printf("%f\n", static_cast<double>((end_time - start_time).count()) / kBatch);
+    printf("%f us\n", static_cast<double>((end_time - start_time).count()) / kBatch);
     std::this_thread::sleep_for(500ms);
   }
 }

@@ -14,7 +14,8 @@ using namespace std::chrono_literals;
 
 class TimeStamp {
  public:
-  using DefaultDuration = std::chrono::microseconds; // 内部使用一个int64进行记录
+  // 默认的时间长度内部使用一个int64进行记录
+  using DefaultDuration = std::chrono::microseconds;
 
   template<typename Rep, typename Period>
   TimeStamp(std::chrono::duration<Rep, Period> time)

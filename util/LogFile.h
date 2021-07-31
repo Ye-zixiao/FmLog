@@ -20,7 +20,10 @@ class LogFile {
           const std::string &log_file_name,
           uint32_t roll_file_size)
       : log_file_name_(log_directory + log_file_name),
-        roll_file_size_max_(roll_file_size) {
+        roll_file_size_max_(roll_file_size),
+        roll_file_(),
+        writen_bytes_(0),
+        file_num_(0) {
     rollFile();
   }
 
@@ -37,7 +40,7 @@ class LogFile {
     roll_file_ = std::make_unique<std::ofstream>();
     std::string next_roll_file_name = log_file_name_;
     next_roll_file_name.append(".");
-    next_roll_file_name.append(std::to_string(++file_num_));
+    next_roll_file_name.append(std::to_string(file_num_++));
     next_roll_file_name.append(".log");
     roll_file_->open(next_roll_file_name, std::ofstream::out | std::ofstream::trunc);
   }

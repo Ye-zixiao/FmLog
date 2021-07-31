@@ -27,6 +27,3 @@ include_directories(${PROJECT_SOURCE_DIR})
 include_directories(${PROJECT_SOURCE_DIR}/include)
 
 add_subdirectory(util)
-
-add_executable(FmLog main.cpp include/fmlog/Log.h)
-target_link_libraries(FmLog fmutil)

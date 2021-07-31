@@ -4,6 +4,7 @@
 
 #include "util/LogBufferQueue.h"
 #include <cassert>
+#include <cstdlib>
 #include "util/SpinLock.h"
 
 namespace fm::log {

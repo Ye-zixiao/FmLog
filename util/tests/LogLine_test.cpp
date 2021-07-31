@@ -11,7 +11,7 @@ using namespace std;
 using namespace fm::log;
 
 int main() {
-  char buf[32] = "test my log code";
+  char buf[32] = "tests my log code";
   const char *const psubstr = &buf[5];
 
   LogLine log_line_error(LogLevel::kERROR, 1, __FILE__, __LINE__);
