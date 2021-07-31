@@ -16,7 +16,7 @@ set(CXX_FLAGS
         -Wwrite-strings
         -std=c++17
         -march=native
-        -rdynamic
+#        -rdynamic
         )
 string(REPLACE ";" " " CMAKE_CXX_FLAGS "${CXX_FLAGS}")
 
@@ -27,3 +27,4 @@ include_directories(${PROJECT_SOURCE_DIR})
 include_directories(${PROJECT_SOURCE_DIR}/include)
 
 add_subdirectory(util)
+add_subdirectory(examples)

@@ -112,7 +112,11 @@ LogLine::LogLine(LogLevel level, int old_errno, const char *file, uint32_t line)
       stack_buffer_{} {
   static_assert(sizeof(LogLine) == 128, "sizeof LogLine != 128");
   encode<time::TimeStamp>(time::SystemClock::now());
+#ifdef __linux__
   encode<pid_t>(thisThreadId());
+#else
+  encode<pthread_t>(thisThreadId());
+#endif
   encode<LogLevel>(level);
   encode<std::string_view>(file);
   encode<uint32_t>(line);

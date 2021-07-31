@@ -34,9 +34,9 @@ int main() {
   auto saved_timestamp = *reinterpret_cast<TimeStamp *>(buf);
   cout << saved_timestamp.toString() << endl;
 
-  cout << saved_timestamp.toString(true) << " " << 12324
-       << " [INFO] " << basename(__FILE__) << ":" << __LINE__
-       << ":" << __FUNCTION__ << " - " << "hello world" << endl;
+  cout << saved_timestamp.toString(true) << " " << 12324 << " [INFO] "
+       << basename(__FILE__) << ":" << __LINE__ << ":" << __FUNCTION__
+       << " - " << "hello world" << endl;
 
   return 0;
 }
