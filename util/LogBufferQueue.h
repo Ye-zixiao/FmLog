@@ -39,6 +39,8 @@ class LogBuffer {
   LogBuffer &operator=(const LogBuffer &) = delete;
 
  private:
+  static std::allocator<Item> allocator_;
+
   // 最后一个元素用来存放日志缓冲块中日志行的数量，其他用来表示日志行的有效状态
   std::atomic<size_t> write_states_[kSize + 1];
   Item *items_;

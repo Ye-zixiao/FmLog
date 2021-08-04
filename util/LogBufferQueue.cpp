@@ -4,7 +4,6 @@
 
 #include "util/LogBufferQueue.h"
 #include <cassert>
-#include <cstdlib>
 #include "util/SpinLock.h"
 
 namespace fm::log {
@@ -26,9 +25,11 @@ void getAllocationForDebug(int &new_time, int &reuse_time,
   backup_size = g_backup_size.load(std::memory_order_relaxed);
 }
 
+std::allocator<LogBuffer::Item> LogBuffer::allocator_;
+
 LogBuffer::LogBuffer() :
     write_states_{},
-    items_(static_cast<Item *>(::malloc(kSize * sizeof(Item)))) {
+    items_(allocator_.allocate(kSize + 1)) {
   // 构造之时只是分配了相应的内存空间
   static_assert(sizeof(Item) == 128, "sizeof Item != 128");
 }
@@ -36,12 +37,13 @@ LogBuffer::LogBuffer() :
 LogBuffer::~LogBuffer() {
   size_t write_count = this->write_states_[kSize].load();
   for (size_t i = 0; i < write_count; ++i)
-    items_[i].~Item();
-  ::free(items_);
+    allocator_.destroy(&items_[i]);
+  allocator_.deallocate(items_, kSize + 1);
 }
 
 bool LogBuffer::push(LogLine &&log_line, size_t write_index) {
-  // 使用定位new在缓冲区中创建相应的日志行LogLine
+//   使用定位new在缓冲区中创建相应的日志行LogLine
+//  allocator_.construct(&items_[write_index], std::move(log_line));
   new(&items_[write_index]) Item(std::move(log_line));
   write_states_[write_index].store(1, std::memory_order_release);
 //  return write_states_[kSize].fetch_add(1, std::memory_order_relaxed) + 1 == kSize;// fix it
@@ -81,8 +83,8 @@ bool RingQueue<SIZE>::push(std::unique_ptr<LogBuffer> &&log_buffer) {
   log_buffers_[write_index_] = std::move(log_buffer);
   write_index_ = next_write_index;
 #ifndef NDEBUG
-  g_backup_push_time.fetch_add(1,std::memory_order_relaxed);
-  g_backup_size.fetch_add(1,std::memory_order_relaxed);
+  g_backup_push_time.fetch_add(1, std::memory_order_relaxed);
+  g_backup_size.fetch_add(1, std::memory_order_relaxed);
 #endif
   return true;
 }
@@ -96,7 +98,7 @@ bool RingQueue<SIZE>::pop(std::unique_ptr<LogBuffer> &log_buffer) {
   read_index_ = (read_index_ + 1) % (SIZE + 1);
 #ifndef NDEBUG
   g_backup_pop_time.fetch_add(1, std::memory_order_relaxed);
-  g_backup_size.fetch_sub(1,std::memory_order_relaxed);
+  g_backup_size.fetch_sub(1, std::memory_order_relaxed);
 #endif
   return true;
 }
@@ -119,11 +121,11 @@ void LogBufferQueue::setupNextWriteLogBuffer() {
   if (!backup_log_buffers_.pop(next_write_log_buffer)) {
     next_write_log_buffer = std::make_unique<LogBuffer>();
 #ifndef NDEBUG
-    g_allocation_time.fetch_add(1,std::memory_order_relaxed);
+    g_allocation_time.fetch_add(1, std::memory_order_relaxed);
 #endif
   } else {
 #ifndef NDEBUG
-    g_reuse_time.fetch_add(1,std::memory_order_relaxed);
+    g_reuse_time.fetch_add(1, std::memory_order_relaxed);
 #else
     ;
 #endif
