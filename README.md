@@ -46,7 +46,6 @@ int main(int argc, char *argv[]) {
 $> ./build.sh
 $> sudo make install
 $> sudo echo "/usr/local/lib" >> /etc/ld.so.conf
-$> sudo ldconfig
 ```
 
 
