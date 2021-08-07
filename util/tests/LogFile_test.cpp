@@ -3,7 +3,7 @@
 //
 
 #include "util/LogFile.h"
-#include "util/LogLine.h"
+#include "fmlog/LogLine.h"
 using namespace std;
 using namespace fm::log;
 

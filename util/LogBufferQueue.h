@@ -8,7 +8,7 @@
 #include <atomic>
 #include <memory>
 #include <queue>
-#include "util/LogLine.h"
+#include "fmlog/LogLine.h"
 
 namespace fm::log {
 

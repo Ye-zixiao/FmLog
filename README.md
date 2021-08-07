@@ -21,6 +21,7 @@
 
 ```cpp
 #include "fmlog/Log.h"
+#include <libgen.h>
 
 int main(int argc, char *argv[]) {
   constexpr uint32_t mb = 1024 * 1024;
@@ -43,6 +44,9 @@ int main(int argc, char *argv[]) {
 
 ```bash
 $> ./build.sh
+$> sudo make install
+$> sudo echo "/usr/local/lib" > /etc/ld.so.conf
+$> sudo ldconfig
 ```
 
 
@@ -55,7 +59,7 @@ $> ./build.sh
 
 <img src="docs/image/Snipaste_2021-08-04_11-44-49.png" alt="Snipaste_2021-08-04_11-44-49" style="zoom:65%;" />
 
-可以看到相同的输出内容下，对于短字符串或常量字符串内容，FmLog的性能在同一个平台上输出性能性能更好，另一方面的好处就是FmLog使用的内存更加节省（这点测试我比较直观，略）。正由于FmLog紧凑内存、实时解析的特点所以比muduo节省了将近一般的性能。
+可以看到相同的输出内容下，对于短字符串或常量字符串内容，FmLog的性能在同一个平台上输出性能性能更好，另一方面的好处就是FmLog使用的内存更加节省（这点测试我比较直观，略）。正由于FmLog紧凑内存、实时解析的特点所以比muduo节省了将近一半的性能。
 
 2、分别在muduo和FmLog上进行长字符串内容的性能测试：
 

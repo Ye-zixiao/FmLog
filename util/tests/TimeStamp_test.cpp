@@ -5,8 +5,8 @@
 #include <iostream>
 #include <string>
 #include <cstring>
-#include "util/TimeStamp.h"
-#include "util/SystemClock.h"
+#include "fmlog/TimeStamp.h"
+#include "fmlog/SystemClock.h"
 using namespace std;
 using namespace fm::time;
 

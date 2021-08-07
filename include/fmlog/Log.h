@@ -6,9 +6,9 @@
 #define FMLOG_INCLUDE_LOG_H_
 
 #include <string>
-#include "util/LogLine.h"
-#include "util/TimeStamp.h"
-#include "util/SystemClock.h"
+#include "fmlog/LogLine.h"
+#include "fmlog/TimeStamp.h"
+#include "fmlog/SystemClock.h"
 
 namespace fm::log {
 

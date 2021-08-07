@@ -26,5 +26,7 @@ set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 include_directories(${PROJECT_SOURCE_DIR})
 include_directories(${PROJECT_SOURCE_DIR}/include)
 
+install(DIRECTORY include/fmlog DESTINATION include)
+
 add_subdirectory(util)
 add_subdirectory(examples)

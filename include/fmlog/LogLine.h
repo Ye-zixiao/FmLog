@@ -2,8 +2,8 @@
 // Created by Ye-zixiao on 2021/7/27.
 //
 
-#ifndef FMLOG_UTIL_LOGLINE_H_
-#define FMLOG_UTIL_LOGLINE_H_
+#ifndef FMLOG_INCLUDE_LOGLINE_H_
+#define FMLOG_INCLUDE_LOGLINE_H_
 
 #include <string_view>
 #include <memory>
@@ -93,4 +93,4 @@ class LogLine {
 
 } // namespace fm::log
 
-#endif //FMLOG_UTIL_LOGLINE_H_
+#endif //FMLOG_INCLUDE_LOGLINE_H_

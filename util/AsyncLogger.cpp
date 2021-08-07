@@ -4,7 +4,7 @@
 
 #include "util/AsyncLogger.h"
 #include <chrono>
-#include "util/LogLine.h"
+#include "fmlog/LogLine.h"
 #include "util/LogFile.h"
 #include "util/LogBufferQueue.h"
 
