@@ -5,8 +5,8 @@
 #include <string>
 #include <string_view>
 #include <iostream>
-#include "util/SystemClock.h"
-#include "util/LogLine.h"
+#include "fmlog/SystemClock.h"
+#include "fmlog/LogLine.h"
 using namespace std;
 using namespace fm::log;
 

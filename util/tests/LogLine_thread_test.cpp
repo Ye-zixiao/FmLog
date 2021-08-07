@@ -4,7 +4,7 @@
 
 #include <thread>
 #include <iostream>
-#include "util/LogLine.h"
+#include "fmlog/LogLine.h"
 #include "util/SpinLock.h"
 using namespace std;
 

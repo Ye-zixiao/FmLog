@@ -2,11 +2,11 @@
 // Created by Ye-zixiao on 2021/7/27.
 //
 
-#ifndef FMLOG_UTIL_SYSTEMCLOCK_H_
-#define FMLOG_UTIL_SYSTEMCLOCK_H_
+#ifndef FMLOG_INCLUDE_SYSTEMCLOCK_H_
+#define FMLOG_INCLUDE_SYSTEMCLOCK_H_
 
 #include <chrono>
-#include "util/TimeStamp.h"
+#include "fmlog/TimeStamp.h"
 
 namespace fm::time {
 
@@ -59,4 +59,4 @@ struct SystemClock {
 
 } // namespace fm::time
 
-#endif //FMLOG_UTIL_SYSTEMCLOCK_H_
+#endif //FMLOG_INCLUDE_SYSTEMCLOCK_H_

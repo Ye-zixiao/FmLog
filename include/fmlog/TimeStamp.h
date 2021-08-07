@@ -2,8 +2,8 @@
 // Created by Ye-zixiao on 2021/7/27.
 //
 
-#ifndef FMLOG_UTIL_TIMESTAMP_H_
-#define FMLOG_UTIL_TIMESTAMP_H_
+#ifndef FMLOG_INCLUDE_TIMESTAMP_H_
+#define FMLOG_INCLUDE_TIMESTAMP_H_
 
 #include <string>
 #include <chrono>
@@ -101,4 +101,4 @@ struct hash<fm::time::TimeStamp> {
 
 } // namespace std
 
-#endif //FMLOG_UTIL_TIMESTAMP_H_
+#endif //FMLOG_INCLUDE_TIMESTAMP_H_
