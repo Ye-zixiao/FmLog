@@ -48,7 +48,7 @@ bool LogBuffer::push(LogLine &&log_line, size_t write_index) {
   write_states_[write_index].store(1, std::memory_order_release);
 //  return write_states_[kSize].fetch_add(1, std::memory_order_relaxed) + 1 == kSize;// fix it
   if (write_states_[kSize].fetch_add(1, std::memory_order_relaxed) + 1 == kSize) {
-    // 这里我觉得使用内存松弛序应该是没什么问题的
+    // 这里我觉得使用内存松弛序应该是没什么问题的，因为只有当前函数在操纵这个变量
     // 由于这个LogBuffer需要复用，所以我们需要对其进行reset
     write_states_[kSize].store(0, std::memory_order_relaxed);
     return true;
@@ -60,6 +60,8 @@ bool LogBuffer::pop(LogLine &log_line, size_t read_index) {
   if (write_states_[read_index].load(std::memory_order_acquire)) {
     Item &item = items_[read_index];
     log_line = std::move(item.log_line);
+    // 其实析构不析构都没什么问题，因为原来的LogLine类对象已经被移动走了
+    allocator_.destroy(&item);
     return true;
   }
   return false;
